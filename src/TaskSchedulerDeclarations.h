@@ -125,7 +125,15 @@ class Scheduler;
 class Task {
   friend class Scheduler;
   public:
-    INLINE Task(unsigned long aInterval=0, long aIterations=0, TaskCallback aCallback=NULL, Scheduler* aScheduler=NULL, bool aEnable=false, TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL, void* aUserData=NULL);
+    INLINE Task(
+        unsigned long aInterval=0, long aIterations=0, 
+        TaskCallback aCallback=NULL, 
+        Scheduler* aScheduler=NULL,
+        bool aEnable=false, TaskOnEnable aOnEnable=NULL,
+        TaskOnDisable aOnDisable=NULL, 
+        void* aCallbackUserData=NULL,
+        void* aEnableUserData=NULL,
+        void* aDisableUserData=NULL);
 
 #ifdef _TASK_STATUS_REQUEST
     INLINE Task(TaskCallback aCallback=NULL, Scheduler* aScheduler=NULL, TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL);
@@ -151,7 +159,12 @@ class Task {
     INLINE void forceNextIteration(); 
     INLINE bool disable();
     INLINE bool isEnabled();
-    INLINE void set(unsigned long aInterval, long aIterations, TaskCallback aCallback,TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL, void *aUserData=NULL);
+    INLINE void set(
+        unsigned long aInterval, long aIterations, 
+        TaskCallback aCallback,TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL,
+        void* aCallbackUserData=NULL,
+        void* aEnableUserData=NULL,
+        void* aDisableUserData=NULL);
     INLINE void setInterval(unsigned long aInterval);
     INLINE unsigned long getInterval();
     INLINE void setIterations(long aIterations);
@@ -208,7 +221,9 @@ class Task {
     TaskCallback              iCallback;             // pointer to the void callback method
     TaskOnEnable              iOnEnable;             // pointer to the bolol OnEnable callback method
     TaskOnDisable             iOnDisable;            // pointer to the void OnDisable method
-    void                     *iUserData;             // pointer to custom user data which will be passed to all callbacks
+    void                     *iCallbackUserData;     // pointer to custom user data which will be passed to callback
+    void                     *iEnableUserData;       // pointer to custom user data which will be passed to enable callback
+    void                     *iDisableUserData;      // pointer to custom user data which will be passed to disable callback
     Task                     *iPrev, *iNext;         // pointers to the previous and next tasks in the chain
     Scheduler                *iScheduler;            // pointer to the current scheduler
 
