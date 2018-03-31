@@ -215,9 +215,9 @@ extern "C" {
 /** Constructor, uses default values for the parameters
  * so could be called with no parameters.
  */
-Task::Task( unsigned long aInterval, long aIterations, TaskCallback aCallback, Scheduler* aScheduler, bool aEnable, TaskOnEnable aOnEnable, TaskOnDisable aOnDisable ) {
+Task::Task( unsigned long aInterval, long aIterations, TaskCallback aCallback, Scheduler* aScheduler, bool aEnable, TaskOnEnable aOnEnable, TaskOnDisable aOnDisable, void* aUserData ) {
     reset();
-    set(aInterval, aIterations, aCallback, aOnEnable, aOnDisable);
+    set(aInterval, aIterations, aCallback, aOnEnable, aOnDisable, aUserData);
     if (aScheduler) aScheduler->addTask(*this);
 
 #ifdef _TASK_WDT_IDS
@@ -371,13 +371,15 @@ void Task::reset() {
  * @param aCallback - pointer to the callback method which executes the task actions
  * @param aOnEnable - pointer to the callback method which is called on enable()
  * @param aOnDisable - pointer to the callback method which is called on disable()
+ * @param aUserData - pointer to custom user data which will be passed to all callbacks
  */
-void Task::set(unsigned long aInterval, long aIterations, TaskCallback aCallback, TaskOnEnable aOnEnable, TaskOnDisable aOnDisable) {
+void Task::set(unsigned long aInterval, long aIterations, TaskCallback aCallback, TaskOnEnable aOnEnable, TaskOnDisable aOnDisable, void *aUserData) {
     setInterval(aInterval);
     iSetIterations = iIterations = aIterations;
     iCallback = aCallback;
     iOnEnable = aOnEnable;
     iOnDisable = aOnDisable;
+    iUserData = aUserData;
 }
 
 /** Sets number of iterations for the task
@@ -421,7 +423,7 @@ void Task::enable() {
             Task *current = iScheduler->iCurrent;
             iScheduler->iCurrent = this;
             iStatus.inonenable = true;      // Protection against potential infinite loop
-            iStatus.enabled = iOnEnable();
+            iStatus.enabled = iOnEnable(iUserData);
             iStatus.inonenable = false;     // Protection against potential infinite loop
             iScheduler->iCurrent = current;
         }
@@ -528,7 +530,7 @@ bool Task::disable() {
     if (previousEnabled && iOnDisable) {
         Task *current = iScheduler->iCurrent;
         iScheduler->iCurrent = this;
-        iOnDisable();
+        iOnDisable(iUserData);
         iScheduler->iCurrent = current;
     }
 #ifdef _TASK_STATUS_REQUEST
@@ -877,7 +879,7 @@ bool Scheduler::execute() {
 
                 iCurrent->iDelay = i;
                 if ( iCurrent->iCallback ) {
-                    iCurrent->iCallback();
+                    iCurrent->iCallback(iCurrent->iUserData);
                     idleRun = false;
                 }
             }

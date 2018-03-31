@@ -1,0 +1,6 @@
+{
+    "port": "/dev/ttyUSB0",
+    "sketch": "examples/Scheduler_example21_UserDataCallback/Scheduler_example21_UserDataCallback.ino",
+    "board": "arduino:avr:mega",
+    "configuration": "cpu=atmega2560"
+}

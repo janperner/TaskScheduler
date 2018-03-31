@@ -1,0 +1,29 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "/usr/local/share/arduino/hardware/arduino/avr/cores/arduino",
+                "/usr/local/share/arduino/libraries/ArduinoSTL/src",
+                "/usr/local/share/arduino/libraries/Embedded_Template_Library/src",
+                "/usr/local/share/arduino/hardware/tools/avr/avr/include",
+                "/usr/local/share/arduino/hardware/arduino/avr/variants/mega"
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": false,
+                "path": [
+                    "/usr/local/share/arduino/hardware/arduino/avr/cores/arduino",
+                    "/usr/local/share/arduino/libraries/ArduinoSTL/src",
+                    "/usr/local/share/arduino/libraries/Embedded_Template_Library/src",
+                    "/usr/local/share/arduino/hardware/tools/avr/avr/include",
+                    "/usr/local/share/arduino/hardware/arduino/avr/variants/mega"
+                ]
+            },
+            "intelliSenseMode": "clang-x64",
+            "compilerPath": "/usr/bin/clang",
+            "cStandard": "c11",
+            "cppStandard": "c++11"
+        }
+    ],
+    "version": 3
+}

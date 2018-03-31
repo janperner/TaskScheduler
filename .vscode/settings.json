@@ -1,0 +1,17 @@
+{
+    "editor.formatOnSave": false,
+    "files.associations": {
+        "bitset": "cpp",
+        "memory": "cpp",
+        "set": "cpp"
+    },
+    "cSpell.allowCompoundWords": true,
+    "cSpell.diagnosticLevel": "Hint",
+    "cSpell.maxNumberOfProblems": 10,
+    "c-cpp-flylint.clang.standard": [
+        "c++11"
+    ],
+    "cSpell.words": [
+        "println"
+    ]
+}

@@ -96,13 +96,13 @@ class StatusRequest {
 
 #ifdef _TASK_STD_FUNCTION
 #include <functional>
-typedef std::function<void()> TaskCallback;
-typedef std::function<void()> TaskOnDisable;
-typedef std::function<bool()> TaskOnEnable;
+typedef std::function<void(void* aUserData)> TaskCallback;
+typedef std::function<void(void* aUserData)> TaskOnDisable;
+typedef std::function<bool(void* aUserData)> TaskOnEnable;
 #else
-typedef void (*TaskCallback)();
-typedef void (*TaskOnDisable)();
-typedef bool (*TaskOnEnable)();
+typedef void (*TaskCallback)(void* aUserData);
+typedef void (*TaskOnDisable)(void* aUserData);
+typedef bool (*TaskOnEnable)(void* aUserData);
 #endif
 
 typedef struct  {
@@ -125,7 +125,7 @@ class Scheduler;
 class Task {
   friend class Scheduler;
   public:
-    INLINE Task(unsigned long aInterval=0, long aIterations=0, TaskCallback aCallback=NULL, Scheduler* aScheduler=NULL, bool aEnable=false, TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL);
+    INLINE Task(unsigned long aInterval=0, long aIterations=0, TaskCallback aCallback=NULL, Scheduler* aScheduler=NULL, bool aEnable=false, TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL, void* aUserData=NULL);
 
 #ifdef _TASK_STATUS_REQUEST
     INLINE Task(TaskCallback aCallback=NULL, Scheduler* aScheduler=NULL, TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL);
@@ -151,7 +151,7 @@ class Task {
     INLINE void forceNextIteration(); 
     INLINE bool disable();
     INLINE bool isEnabled();
-    INLINE void set(unsigned long aInterval, long aIterations, TaskCallback aCallback,TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL);
+    INLINE void set(unsigned long aInterval, long aIterations, TaskCallback aCallback,TaskOnEnable aOnEnable=NULL, TaskOnDisable aOnDisable=NULL, void *aUserData=NULL);
     INLINE void setInterval(unsigned long aInterval);
     INLINE unsigned long getInterval();
     INLINE void setIterations(long aIterations);
@@ -208,6 +208,7 @@ class Task {
     TaskCallback              iCallback;             // pointer to the void callback method
     TaskOnEnable              iOnEnable;             // pointer to the bolol OnEnable callback method
     TaskOnDisable             iOnDisable;            // pointer to the void OnDisable method
+    void                     *iUserData;             // pointer to custom user data which will be passed to all callbacks
     Task                     *iPrev, *iNext;         // pointers to the previous and next tasks in the chain
     Scheduler                *iScheduler;            // pointer to the current scheduler
 
