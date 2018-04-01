@@ -152,6 +152,7 @@ class Task {
     INLINE void enable();
     INLINE bool enableIfNot();
     INLINE void enableDelayed(unsigned long aDelay=0);
+    INLINE bool enableDelayedIfNot(unsigned long aDelay=0);
     INLINE void restart();
     INLINE void restartDelayed(unsigned long aDelay=0);
 

@@ -1,0 +1,67 @@
+BasedOnStyle: Google
+ColumnLimit: 80
+IndentWidth: 4
+TabWidth: 4
+ConstructorInitializerAllOnOneLineOrOnePerLine: true
+NamespaceIndentation: All
+UseTab: Never
+AlignAfterOpenBracket: Align
+AllowAllParametersOfDeclarationOnNextLine: false
+BinPackParameters: false
+BinPackArguments: false
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+BreakBeforeBraces: Custom
+BreakBeforeBinaryOperators: All
+PointerAlignment: Right
+AlignConsecutiveDeclarations: false
+DerivePointerAlignment: false
+ReflowComments: true
+AlignTrailingComments: true
+AccessModifierOffset: -4
+---
+Language: Cpp
+BraceWrapping: {
+    AfterClass: 'true'
+    AfterControlStatement: 'false'
+    AfterEnum : 'true'
+    AfterFunction : 'true'
+    AfterNamespace : 'true'
+    AfterStruct : 'true'
+    AfterUnion : 'true'
+    BeforeCatch : 'false'
+    BeforeElse : 'false'
+    IndentBraces : 'false'
+}
+IncludeCategories:
+  - Regex:	'^<[^/]+\.h>'
+    Priority:	5
+  - Regex:	'^<[^/]+>'
+    Priority:	10
+  - Regex:	'^<(sodiumpp|msgpack)/'
+    Priority:	15
+  - Regex:	'^<.+\.h>'
+    Priority:	20
+  - Regex:	'^<.+>'
+    Priority:	25
+  - Regex:	'^".+\.h"'
+    Priority:	30
+---
+Language: JavaScript
+BraceWrapping: {
+    AfterClass: 'false'
+    AfterControlStatement: 'false'
+    AfterEnum : 'false'
+    AfterFunction : 'false'
+    AfterNamespace : 'false'
+    AfterStruct : 'false'
+    AfterUnion : 'false'
+    BeforeCatch : 'false'
+    BeforeElse : 'false'
+    IndentBraces : 'false'
+}

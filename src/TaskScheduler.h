@@ -465,6 +465,19 @@ void Task::enableDelayed(unsigned long aDelay) {
     delay(aDelay);
 }
 
+/** Enables the task only if it was not enabled already
+ * and schedules it for execution after a delay = aInterval
+ * Returns previous state (true if was already enabled, false if was not)
+ */
+bool Task::enableDelayedIfNot(unsigned long aDelay) {
+    bool previousEnabled = iStatus.enabled;
+    if ( !previousEnabled ) {
+        enable();
+        delay(aDelay);
+    }
+    return (previousEnabled);
+}
+
 #ifdef _TASK_TIMEOUT
 void Task::setTimeout(unsigned long aTimeout, bool aReset) {
 	iTimeout = aTimeout;

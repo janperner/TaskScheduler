@@ -1,39 +1,75 @@
-/** 
+/**
  *  TaskScheduler Test w/ user_data void * in the timer callback
  */
 
 #include <TaskScheduler.h>
 
-// Callback methods prototypes
-void t1Callback(void *userData);
-
-//Tasks
-
-Scheduler runner;
-Task t1(2000, TASK_FOREVER, &t1Callback, NULL, false, NULL, NULL, &runner);
-
-void t1Callback(void *userData)
+namespace  // anonymous namespace
 {
-    Serial.print("t1: ");
-    Serial.println(millis());
+    void foo_task_cb(void *userData);
+
+    class Foo
+    {
+    public:
+        Foo(uint32_t id,
+            uint32_t interval,
+            uint32_t iterations,
+            Scheduler &scheduler)
+            : _id(id),
+              _fooTask(interval,
+                       iterations,
+                       &foo_task_cb,
+                       &scheduler,
+                       true,
+                       NULL,
+                       NULL,
+                       this)
+        {
+        }
+
+    public:
+        void enable()
+        {
+            _fooTask.enable();
+        }
+
+        void incrementCounter()
+        {
+            ++_counter;
+
+            Serial.print("Counter [");
+            Serial.print(_id);
+            Serial.print("]: ");
+            Serial.println(_counter);
+        }
+
+    private:
+        uint32_t _id;
+        Task _fooTask;
+        uint32_t _counter{};
+    };
+
+    void foo_task_cb(void *userData)
+    {
+        reinterpret_cast<Foo *>(userData)->incrementCounter();
+    }
+
+    Scheduler g_scheduler;
 }
 
 void setup()
 {
-    Serial.begin(115200);
+    Serial.begin(9600);
     Serial.println("Scheduler TEST");
 
-    runner.init();
+    g_scheduler.init();
     Serial.println("Initialized scheduler");
 
-    runner.addTask(t1);
-    Serial.println("added t1");
-
-    t1.enable();
-    Serial.println("Enabled t1");
+    new Foo(1, 2000, 5, g_scheduler);
+    new Foo(2, 1500, 4, g_scheduler);
 }
 
 void loop()
 {
-    runner.execute();
+    g_scheduler.execute();
 }
